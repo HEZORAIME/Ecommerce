@@ -1,4 +1,4 @@
-import { connectDB } from './config/Database';
+import { connectDB } from './config/Database.js';
 import express from 'express';
 import dotenv from 'dotenv';
 
@@ -10,7 +10,6 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
-
 
 connectDB().then(() => {
     app.listen(PORT, () => {
