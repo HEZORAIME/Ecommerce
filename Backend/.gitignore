@@ -1,0 +1,9 @@
+// File: Backend/.gitignore
+# Note.js depencencies
+node_modules/
+package-lock.json
+package.json
+
+
+# Evironment variables
+.env
