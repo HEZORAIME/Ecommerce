@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import bcrypt, { compare } from "bcrypt";
+import bcrypt from "bcrypt";
 /**
  * Registers a new user.
  * - Validates email uniqueness
@@ -30,13 +30,12 @@ export const registerUser = async (req, res) => {
     await newUser.save();
 
     // Respond with success
-    return res.status(201).json({ message: 'User registered successfully!' });
-
+    return res.status(201).json({ message: "User registered successfully!" });
   } catch (err) {
     console.error("Error during user registration:", err);
     return res.status(500).json({
       message: "Something went wrong during registration.",
-      error: err.message
+      error: err.message,
     });
   }
 };
