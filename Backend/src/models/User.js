@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6,
         trim: true,
-        select: false
+        select: false // it prevents for accidental exposure of password in queries
     },
     Role: {
         type: String,
