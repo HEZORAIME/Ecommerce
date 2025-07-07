@@ -89,8 +89,10 @@ export const LoginUser = async (req, res) => {
     // so the user can login
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(40).json({ message: "Invalid email or password" });
+      return res.status(401).json({message: "Invalid email or password"});
     }
+    // generate jwt token for the user
+    const toekn = generateToken(user._id);
 
     // if everything is correct let say the password is correct and
     //  email also it will return success message and user can login
