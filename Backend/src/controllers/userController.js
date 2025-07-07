@@ -100,7 +100,17 @@ export const LoginUser = async (req, res) => {
       secure: false, // false because it is not in production so it is set to false for development
       sameSite: 'strict', // to prevent csrf(security)
       maxAge: 24 * 60 * 60 * 1000, // 1 day
-    })
+    });
+
+    return res.status(200).json({
+      message: "Login Successful",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.Role
+      },
+    });
   } catch (err) {
 
   }
