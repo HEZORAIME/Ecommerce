@@ -11,6 +11,11 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
+app.use(cookieParser());
+
+
+
+// api routes
 app.use("/api/users", UserRoute);
 
 connectDB().then(() => {
