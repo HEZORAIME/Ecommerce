@@ -117,7 +117,16 @@ export const LoginUser = async (req, res) => {
   }
 };
 
-
+// Logout Logic function
+export const LogoutUser = async (req, res) => {
+  try {
+    res.clearCookie('authToken');
+    return res.status(200).json({message: "Logout Successfully"});
+  } catch (error) {
+    console.error("Error during logout", error);
+    return res.status(500).json({message: "Internal Error!"});
+  }
+};
 
 
 
