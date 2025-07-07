@@ -77,8 +77,7 @@ export const registerUser = async (req, res) => {
 // };
 
 export const LoginUser = async (req, res) => {
-  // extract user credentials
-  const { email, password } = req.body;
+  const {email, password } = req.body;
   try {
     // find user in database
     const user = await User.findOne({email}).select('+password');
