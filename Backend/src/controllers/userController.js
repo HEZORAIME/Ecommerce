@@ -94,19 +94,31 @@ export const LoginUser = async (req, res) => {
     // generate jwt token for the user
     const toekn = generateToken(user._id);
 
-    // if everything is correct let say the password is correct and
-    //  email also it will return success message and user can login
-    return res.status(200).json({
-      message: "Login Successful",
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.Role
-      },
-    });
-  } catch (error) {
-    console.error("Error during login", error);
-    return res.status(500).json({message: "Internal Error!"});
+    // se
+    res.cookie('authToken', toekn, {
+      httpOnly: true,
+      secure: false, // false because it is not in production so it is set to false for development
+      sameSite: 'strict', // to prevent csrf(security)
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    })
+  } catch (err) {
+
   }
-};
+}
+
+
+
+
+
+
+// const LogoutUser = async (req, res) => {
+//   const userId = req.user.id;
+//   try {
+//     const user = await User.findById({userId});
+//     if (!user) {
+//       return res.status(404).json({message: "User not found"})
+//     }
+//   } catch (err) {
+
+//   }
+// }
