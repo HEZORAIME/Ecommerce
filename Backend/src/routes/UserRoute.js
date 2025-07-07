@@ -1,10 +1,13 @@
 import express from 'express';
-import { registerUser, LoginUser } from '../controllers/userController.js';
+import { registerUser, LoginUser, LogoutUser, GetUserProfile } from '../controllers/userController.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Route to register a new user
+// Routes
 router.post('/register', registerUser)
-router.post('/Login', LoginUser)
+router.post('/login', LoginUser)
+router.post('/logout', authenticateToken, LogoutUser)
+router.get('/profile',authenticateToken, GetUserProfile)
 
 export default router;
