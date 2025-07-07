@@ -29,7 +29,8 @@ export const authenticateToken = async (req, res, next) => {
 };
 
 
-
+// check if the user is admin or not if it is not admin then
+//  we can not access the protected routes
 export const isAdmin = (req, res, next) => {
     if (req.user.Role !=='admin') {
         return res.status(403).json({message: "Access denied."});
