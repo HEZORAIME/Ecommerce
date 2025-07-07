@@ -83,10 +83,10 @@ export const LoginUser = async (req, res) => {
     const user = await User.findOne({email}).select('+password');
     // const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({message: "Invalid email or password"});
     }
-
-    // compare the password hash that are in database(mongoodb)
+    // it compare the passowrd hash that are in database(mongoodb_atlas) if it is match then it will return
+    // so the user can login
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(40).json({ message: "Invalid email or password" });
