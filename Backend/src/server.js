@@ -2,6 +2,7 @@ import { connectDB } from './config/Database.js';
 import express from 'express';
 import dotenv from 'dotenv';
 import UserRoute from './routes/UserRoute.js'
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
