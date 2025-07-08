@@ -131,17 +131,13 @@ export const LogoutUser = async (_req, res) => {
   }
 };
 
-
-
-
-// const LogoutUser = async (req, res) => {
-//   const userId = req.user.id;
-//   try {
-//     const user = await User.findById({userId});
-//     if (!user) {
-//       return res.status(404).json({message: "User not found"})
-//     }
-//   } catch (err) {
-
-//   }
-// }
+export const GetUserProfile = async (req, res) => {
+  res.status(200).json({message: "Profile data",
+    user: {
+      id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+      role: req.user.Role
+    }
+  });
+};
