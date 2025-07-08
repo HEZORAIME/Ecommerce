@@ -1,5 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
+import { generateToken } from '../utils/jwt.js';
+
 /**
  * Registers a new user.
  * - Validates email uniqueness
@@ -92,10 +94,11 @@ export const LoginUser = async (req, res) => {
       return res.status(401).json({message: "Invalid email or password"});
     }
     // generate jwt token for the user
-    const toekn = generateToken(user._id);
+    const token = generateToken(user._id);
 
-    // se
-    res.cookie('authToken', toekn, {
+    // adding the token to the cookie for the user for future
+    //  authentication and authotization
+    res.cookie('authToken', token, {
       httpOnly: true,
       secure: false, // false because it is not in production so it is set to false for development
       sameSite: 'strict', // to prevent csrf(security)
@@ -112,13 +115,13 @@ export const LoginUser = async (req, res) => {
       },
     });
   } catch (err) {
-    console.log("error during login", error);
+    console.log("error during login", err);
     return res.status(500).json({message: "Internal Error!"});
   }
 };
 
 // Logout Logic function
-export const LogoutUser = async (req, res) => {
+export const LogoutUser = async (_req, res) => {
   try {
     res.clearCookie('authToken');
     return res.status(200).json({message: "Logout Successfully"});
