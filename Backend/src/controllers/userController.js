@@ -103,3 +103,12 @@ export const GetUserProfile = async (req, res) => {
     }
   });
 };
+
+// Admin Dashboard
+export const getAdminDashboard = async (req, res) => {
+  // Admin-specific functionality here
+  res.status(200).json({
+    message: "Admin dashboard data",
+    // Include admin-specific data
+  });
+};
