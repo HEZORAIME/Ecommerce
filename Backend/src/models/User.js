@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-})
+}, { validateBeforeSave: true }) // adding this even mongoose check regex before saving it to db by default
+// but i add it anyway for good practices
 const User = mongoose.model("User", userSchema)
 export default User;
