@@ -1,21 +1,22 @@
 import { useState } from 'react';
+import api from '../utils/api';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleLogin = async (e) => {
     e.preventDefault();
-    await fetch('/api/users/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-      credentials: 'include',
-    });
+    try {
+      const response = await api.post('/users/login', { email, password });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
     // redirect based on role
   };
   return (
     <form onSubmit={handleLogin}>
-      <input value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      <input placeholder='Enter your email' value={email} onChange={e => setEmail(e.target.value)} />
+      <input placeholder='Enter your password' type="password" value={password} onChange={e => setPassword(e.target.value)} />
       <button type="submit">Login</button>
     </form>
   );
