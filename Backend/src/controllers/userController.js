@@ -85,8 +85,8 @@ export const LoginUser = async (req, res) => {
       },
     });
   } catch (err) {
-    console.log("error during login", err);
-    return res.status(500).json({ message: "Internal Error!" });
+    console.error("Error during login:", err.message, err.stack);
+    return res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 };
 
