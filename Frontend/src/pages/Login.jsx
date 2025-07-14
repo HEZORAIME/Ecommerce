@@ -9,6 +9,14 @@ export default function Login() {
     try {
       const response = await api.post("/users/login", { email, password });
       console.log(response.data);
+      if (response.data.role === "admin") {
+        window.location.href = "/admin/dashboard";
+      } else if (response.data.role === "users") {
+        window.location.href = "/dashboard";
+      } else {
+        setError("Invalid Role")
+        console.log(error)
+      }
     } catch (error) {
       console.error('Login failed:', error);
     }
