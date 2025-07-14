@@ -18,14 +18,23 @@ export default function Login() {
         console.log(error)
       }
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
     }
     // redirect based on role
   };
   return (
     <form onSubmit={handleLogin}>
-      <input placeholder='Enter your email' value={email} onChange={e => setEmail(e.target.value)} />
-      <input placeholder='Enter your password' type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      <input
+        placeholder="Enter your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        placeholder="Enter your password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <button type="submit">Login</button>
     </form>
   );
