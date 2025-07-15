@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import api from '../utils/api';
+import { useState } from "react";
+import api from "../utils/api";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +16,7 @@ export default function Login() {
       } else {
         setError("Invalid Role")
         console.log(error)
+        return;
       }
     } catch (error) {
       console.error("Login failed:", error);
