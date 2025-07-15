@@ -6,8 +6,9 @@ import AdminDashboard from './pages/adminDashboard';
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/Register" element={<Register />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<UserDashboard />} />
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
     </Routes>
