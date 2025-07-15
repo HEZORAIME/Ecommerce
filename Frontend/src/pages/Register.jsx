@@ -40,6 +40,7 @@ export default function Register() {
                 <input type="password" placeholder="Enter your password" value={password} onChange={e =>setPassword(e.target.value)}/>
             </label>
             <button type="submit">Register</button>
+            {error && <p>{error}</p>}
         </form>
     )
 }
