@@ -30,12 +30,16 @@ export default function Login() {
         placeholder="Enter your email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        required
+        autoComplete="email"
       />
       <input
         placeholder="Enter your password"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        required
+        autoComplete="current-password"
       />
       <button type="submit">Login</button>
       <p>
