@@ -15,8 +15,8 @@ export default function Login() {
       } else if (response.data.role === "users") {
         window.location.href = "/dashboard";
       } else {
-        setError("Invalid Role")
-        console.log(error)
+        setError("Invalid Role");
+        console.log(error);
         return;
       }
     } catch (error) {
