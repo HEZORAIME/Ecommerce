@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../utils/api";
+import { Link } from "react-router";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +38,9 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">Login</button>
+      <p>
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
     </form>
   );
 }
