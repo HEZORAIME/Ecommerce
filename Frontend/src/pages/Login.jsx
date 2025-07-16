@@ -1,19 +1,20 @@
 import { useState } from "react";
 import api from "../utils/api";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await api.post("/users/login", { email, password });
       console.log(response.data);
       if (response.data.role === "admin") {
-        window.location.href = "/admin/dashboard";
+        navigate("/admin/dashboard");
       } else if (response.data.role === "users") {
-        window.location.href = "/dashboard";
+        navigate("/dashboard");
       } else {
         setError("Invalid Role");
         console.log(error);
