@@ -1,11 +1,12 @@
 import { useState } from "react";
 import api from "../utils/api";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -22,7 +23,7 @@ export default function Register() {
         name: username,
       });
       if (response.status === 200 || response.status === 201) {
-        window.location.href = "/login";
+        navigate("/login");
       } else {
         setError("Registration failed");
       }
@@ -39,7 +40,7 @@ export default function Register() {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="">
+      <label>
         Username:
         <input
           placeholder="Username"
