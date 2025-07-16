@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from '../utils/api';
+import {Link} from "react-router"
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -40,6 +41,9 @@ export default function Register() {
                 <input type="password" placeholder="Enter your password" value={password} onChange={e =>setPassword(e.target.value)}/>
             </label>
             <button type="submit">Register</button>
+            <p>
+                Already have account? <Link to = "/login">Login</Link>
+            </p>
             {error && <p>{error}</p>}
         </form>
     )
