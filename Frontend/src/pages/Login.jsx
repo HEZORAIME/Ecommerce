@@ -11,9 +11,9 @@ export default function Login() {
     try {
       const response = await api.post("/users/login", { email, password });
       console.log(response.data);
-      if (response.data.role === "admin") {
+      if (response.data.user.role === "admin") {
         navigate("/admin/dashboard");
-      } else if (response.data.role === "users") {
+      } else if (response.data.user.role === "user") {
         navigate("/dashboard");
       } else {
         setError("Invalid Role");
