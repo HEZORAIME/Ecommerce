@@ -94,7 +94,11 @@ export const LoginUser = async (req, res) => {
 // Logout Logic function
 export const LogoutUser = async (_req, res) => {
   try {
-    res.clearCookie("authToken");
+    res.clearCookie("authToken", {
+      httpOnly: true, // for best security
+      secure: false, // false for developmebt true for production if it is set to true it use https
+      sameSite: 'Lax', // best default for same-origin(it prevents csrf even on development)
+    });
     return res.status(200).json({ message: "Logout Successfully" });
   } catch (error) {
     console.error("Error during logout", error);
