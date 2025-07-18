@@ -119,7 +119,7 @@ export const GetUserProfile = async (req, res) => {
 };
 
 // Admin Dashboard
-export const getAdminDashboard = async (req, res) => {
+export const getAdminDashboard = async (_req, res) => {
   // Admin-specific functionality here
   res.status(200).json({
     message: "Admin dashboard data",
