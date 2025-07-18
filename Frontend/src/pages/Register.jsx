@@ -13,7 +13,7 @@ export default function Register() {
     e.preventDefault();
     try {
       if (!username || !password || !email) {
-        setError("Please fill all the");
+        setError("Please fill all the fields");
         return;
       }
       const response = await api.post("/users/register", {
