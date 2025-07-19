@@ -33,14 +33,14 @@ export const registerUser = async (req, res) => {
 
     // Respond with success
     // return res.status(201).json({ message: "User registered successfully!" });
-    res.json({message: "User register succesfully"});
+    res.json({message: "User register successfully"});
   } catch (err) {
     console.error("Error during user registration:", err);
 
     if (error.name === "ValidationError") {
       return res.status(400).json({
         message: "Validation failed",
-        errors: error.error,
+        errors: error.errors,
       });
     }
 
@@ -69,7 +69,7 @@ export const LoginUser = async (req, res) => {
 
     // adding the token to the cookie for the user for future
     //  authentication and authotization
-    res.cookie("authToken", token, {
+    res.cookie("ec_user", token, {
       httpOnly: true,
       secure: false, // false because it is not in production so it is set to false for development
       sameSite: "strict", // to prevent csrf(security)
@@ -94,7 +94,7 @@ export const LoginUser = async (req, res) => {
 // Logout Logic function
 export const LogoutUser = async (_req, res) => {
   try {
-    res.clearCookie("authToken", {
+    res.clearCookie("ec_user", {
       httpOnly: true, // for best security
       secure: false, // false for developmebt true for production if it is set to true it use https
       sameSite: 'Lax', // best default for same-origin(it prevents csrf even on development)
