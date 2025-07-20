@@ -37,10 +37,10 @@ export const registerUser = async (req, res) => {
   } catch (err) {
     console.error("Error during user registration:", err);
 
-    if (error.name === "ValidationError") {
+    if (err.name === "ValidationError") {
       return res.status(400).json({
         message: "Validation failed",
-        errors: error.errors,
+        errors: err.errors,
       });
     }
 
