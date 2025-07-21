@@ -20,6 +20,20 @@ export const createProduct = async (req, res) => {
         console.error("Error creating product", err);
     }
 }
+export const getallProduct = async (req, res) => {
+    const {category} = req.query;
+    let query = {};
+    if(category) {
+        query.category = category;
+    }
+    try {
+        const product = await Product.find(query).sort({createdAt: -1});
+        res.status(200).json({message: "Product featched successfully", product});
+    } catch (err) {
+        res.status(500).json({message: "Internal server error"});
+        console.error("Error fetching all the product", err);
+    }
+}
 export const addProductReview = async(req, res) => {
     const productId = req.params.productId;
     const {user, name, comment, rating} = req.body;
