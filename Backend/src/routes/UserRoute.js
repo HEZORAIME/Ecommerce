@@ -6,7 +6,7 @@ import {
   GetUserProfile,
 } from "../controllers/userController.js";
 import { authenticateToken, isAdmin } from "../middleware/auth.js";
-import { createProduct } from "../controllers/productController.js";
+import { createProduct, addProductReview } from "../controllers/productController.js";
 
 const router = express.Router();
 
