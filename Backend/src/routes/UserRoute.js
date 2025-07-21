@@ -15,6 +15,9 @@ router.post("/register", registerUser);
 router.post("/login", LoginUser);
 router.post("/logout", authenticateToken, LogoutUser);
 router.get("/profile", authenticateToken, GetUserProfile);
+
+router.post("/products/:productId/reviews", authenticateToken, addProductReview);
+
 // Routes for admin
 router.post("/products", authenticateToken, isAdmin, createProduct);
 
