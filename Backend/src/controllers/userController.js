@@ -64,8 +64,8 @@ export const LoginUser = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-    // generate jwt token for the user
-    const token = generateToken(user._id);
+    // generate jwt token for the user and pass the user id and role
+    const token = generateToken(user._id, user.Role);
 
     // adding the token to the cookie for the user for future
     //  authentication and authotization
