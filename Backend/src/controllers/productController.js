@@ -34,6 +34,21 @@ export const getallProduct = async (req, res) => {
         console.error("Error fetching all the product", err);
     }
 }
+export const getOneProduct = async (req, res) => {
+    const productId = req.params.productId;
+    try {
+        const product = Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({message: "Product not found"})
+        } else {
+            res.status(200).json({message: "Product featched successfully", product});
+        }
+    } catch (err) {
+        res.status(500).json({message: "Internal server error call 911"});
+        console.error("Error fetching product", err);
+    }
+}
+
 export const addProductReview = async(req, res) => {
     const productId = req.params.productId;
     const {user, name, comment, rating} = req.body;
