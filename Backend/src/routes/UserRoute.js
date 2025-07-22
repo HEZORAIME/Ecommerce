@@ -17,6 +17,7 @@ router.post("/logout", authenticateToken, LogoutUser);
 router.get("/profile", authenticateToken, GetUserProfile);
 
 router.post("/products/:productId/reviews", authenticateToken, addProductReview);
+router.get("/allproduct", authenticateToken, getallProduct);
 
 // Routes for admin
 router.post("/products", authenticateToken, isAdmin, createProduct);
