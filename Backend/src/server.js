@@ -3,9 +3,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 import UserRoute from './routes/UserRoute.js'
 import cookieParser from 'cookie-parser';
+import ProductRoute from './routes/ProductRoute.js';
 
 dotenv.config();
-
 
 
 const app = express();
@@ -18,6 +18,7 @@ app.use(cookieParser());
 
 // api routes
 app.use("/api/users", UserRoute);
+app.use("/api/products", ProductRoute);
 
 connectDB().then(() => {
     app.listen(PORT, () => {
