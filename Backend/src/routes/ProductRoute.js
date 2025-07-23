@@ -1,5 +1,5 @@
 import express from 'express';
-import { addProductReview, getallProduct, getOneProduct } from '../controllers/productController.js';
+import { addProductReview, getallProduct, getOneProduct, deleteOneProduct } from '../controllers/productController.js';
 import { authenticateToken } from "../middleware/auth.js";
 const router = express.Router();
 
@@ -7,6 +7,6 @@ const router = express.Router();
 router.post("/products/:productId/reviews", authenticateToken, addProductReview);
 router.get("/allproduct", authenticateToken, getallProduct);
 router.get("/product/:productId", authenticateToken, getOneProduct);
-
+router.delete("/product/:productId", authenticateToken, deleteOneProduct);
 
 export default router;
