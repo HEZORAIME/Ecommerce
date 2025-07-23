@@ -1,4 +1,5 @@
 import Product from "../models/Product.js";
+import mongoose from "mongoose";
 
 export const createProduct = async (req, res) => {
     const { name, price, description, images,
@@ -19,7 +20,7 @@ export const createProduct = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
         console.error("Error creating product", err);
     }
-}
+};
 export const getallProduct = async (req, res) => {
     const {category} = req.query;
     let query = {};
@@ -47,21 +48,27 @@ export const getOneProduct = async (req, res) => {
         res.status(500).json({message: "Internal server error call 911"});
         console.error("Error fetching product", err);
     }
-}
+};
 export const deleteOneProduct = async (req, res) => {
-    const productId = req.params.productId;
-    try {
-        const product = await Product.findByIdAndDelete(productId);
-        if(!product) {
-            return res.status(404).json({message: "Product not found!"})
-        } else {
-            return res.status(200).json({message: "Product delete3d Successfully"})
-        }
-    } catch(err) {
-        res.status(500).json({messasge: "Internal server error"});
-        console.error("error deleting product", err);
+    const deleteProductId = req.params.deleteProductId;
+
+    if (!mongoose.Types.ObjectId.isValid(deleteProductId)) {
+        return res.status(400).json({ message: "Invalid product ID" });
     }
-}
+
+    try {
+        const product = await Product.findByIdAndDelete(deleteProductId);
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found!" });
+        }
+
+        res.status(200).json({ message: "Product deleted successfully" });
+    } catch (err) {
+        console.error("Error deleting product:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 export const addProductReview = async(req, res) => {
     const productId = req.params.productId;
@@ -87,4 +94,4 @@ export const addProductReview = async(req, res) => {
         res.status(500).json({message: "Internal server error"});
         console.log("Error adding review", err);
     }
-}
+};
