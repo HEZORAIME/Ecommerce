@@ -48,6 +48,20 @@ export const getOneProduct = async (req, res) => {
         console.error("Error fetching product", err);
     }
 }
+export const deleteOneProduct = async (req, res) => {
+    const productId = req.params.productId;
+    try {
+        const product = await Product.findByIdAndDelete(productId);
+        if(!product) {
+            return res.status(404).json({message: "Product not found!"})
+        } else {
+            return res.status(200).json({message: "Product delete3d Successfully"})
+        }
+    } catch(err) {
+        res.status(500).json({messasge: "Internal server error"});
+        console.error("error deleting product", err);
+    }
+}
 
 export const addProductReview = async(req, res) => {
     const productId = req.params.productId;
