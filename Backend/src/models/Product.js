@@ -129,7 +129,7 @@ const productSchema = new mongoose.Schema({
         comment: {
           type: String,
           required: true,
-          maxlength: 100,
+          maxlength: 1000,
           default: "Comment",
           select: true,
         },
