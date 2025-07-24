@@ -69,15 +69,24 @@ export const deleteOneProduct = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
-export const updateproduct = async (req, res) => {
+export const updateProduct = async (req, res) => {
     const productId = req.params.productId;
+    const updateFields = {};
     const {name, price, description, images, category, stock} = req.body;
 
-    if( !name || !price === undefined || !description || !images || !category || !stock === undefined ) {
-        return res.status(400).json(({message: "All fields are required"}));
+    for (const key in req.body) {
+        if (req.body.hasOwnProperty(key)) {
+            updateFields[key] = req.body[key];
+        }
     }
+
+    if (Object.keys(updateFields).length === 0) {
+        return res.status(400).json({ message: "No fields to update" });
+    }
+
+    updateFields.updatedAt = Date.now();
     try{
-        const product = await Product.findByIdAndUpdate(productId, {
+        const product = await Product.findByIdAndUpdate(productId, updateFields, {
             name, price, description, images, category, stock
         }, {new: true});
         if (product) {
