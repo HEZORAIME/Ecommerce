@@ -1,6 +1,5 @@
 import api from '../utils/api';
 import { useNavigate } from 'react-router';
-
 export default function Navbar() {
     const navigate = useNavigate();
     const handleLogout = async () => {
@@ -12,8 +11,8 @@ export default function Navbar() {
         }
     }
     return (
-        <div>
-            <button className='btn btn-primary ' onClick={handleLogout}>
+        <div className='flex justify-end pr-2'>
+            <button className='btn btn-primary rounded-sm bg-red-400 text-lg' onClick={handleLogout}>
                 Logout
             </button>
         </div>
