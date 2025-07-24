@@ -1,3 +1,10 @@
+import Navbar from "../components/Navbar";
 export default function AdminDashboard() {
-    return <div>Admin Dashboard</div>;
+
+    return (
+      <h1>
+        <Navbar />
+        admin dashboard
+      </h1>
+    )
   }
