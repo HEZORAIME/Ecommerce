@@ -37,3 +37,9 @@ export const isAdmin = (req, res, next) => {
   }
   next();
 };
+export const isUser = (req, res, next) => {
+  if(!req.user || req.user.Role !== "user") {
+    return res.status(403).json({message: "Access denied. User role required."})
+  }
+  next();
+}
