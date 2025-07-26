@@ -7,7 +7,6 @@ import {
 } from "../controllers/userController.js";
 import { authenticateToken, isAdmin } from "../middleware/auth.js";
 import { createProduct, } from "../controllers/productController.js";
-
 const router = express.Router();
 
 // Routes for user
@@ -18,7 +17,6 @@ router.get("/profile", authenticateToken, GetUserProfile);
 
 // Routes for admin
 router.post("/products", authenticateToken, isAdmin, createProduct);
-// router.delete("/product/:deleteProductId", authenticateToken, isAdmin, deleteOneProduct);
 router.get("/admin/dashboard", authenticateToken, isAdmin, (_req, res) => {
     res.status(200).json({message: "Admin dashboard access successful"});
 });
