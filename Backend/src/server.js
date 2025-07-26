@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import UserRoute from './routes/UserRoute.js'
 import cookieParser from 'cookie-parser';
 import ProductRoute from './routes/ProductRoute.js';
-import {productRateLimiter} from './middleware/productRatelimiter.js';
 
 dotenv.config();
 
@@ -14,7 +13,6 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use("/api/products", productRateLimiter);
 
 
 // api routes
