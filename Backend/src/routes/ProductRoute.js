@@ -6,8 +6,8 @@ const router = express.Router();
 
 // Routes for product - apply rate limiting only for users
 router.post("/products/:productId/reviews", authenticateToken, isUser, productRateLimiter, addProductReview);
-router.get("/allproduct", productRateLimiter, authenticateToken, isUser, getallProduct); // accessible by all authenticated users
-router.get("/allproductt", authenticateToken, isAdmin, getallProduct); // accessible by all authenticated users
+router.get("/allproduct", productRateLimiter, authenticateToken, isUser, getallProduct); // user can access all products with rate limiter
+router.get("/allproductt", authenticateToken, isAdmin, getallProduct); // admin can access all products without affected by rate limiter
 router.get("/product/:productId", authenticateToken, isUser, productRateLimiter, getOneProduct);
 // Admin-only routes - no rate limiting
 router.delete("/product/:deleteProductId", authenticateToken, isAdmin, deleteOneProduct);
