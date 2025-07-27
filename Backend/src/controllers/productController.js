@@ -99,31 +99,50 @@ export const updateProduct = async (req, res) => {
         res.status(500).json({message: "Internal server error"});
     }
 };
-export const updateProductReview = async (req,res) => {
+export const updateProductReview = async (req, res) => {
     const productId = req.params.productId;
     const reviewId = req.params.reviewId;
-    const {user, name, comment, rating} = req.body;
-    try {
-        const product = await Product.findOneAndUpdate({
-            _id: productId,
-            "reviews._id": reviewId
-        }, {
-            $set: {
-                "reviews.$.user": user,
-                "reviews.$.name": name,
-                "reviews.$.comment": comment,
-                "reviews.$.rating": rating
-            }
-        }, {new: true});
-        if (!product) {
-            return res.status(404).json({message: "Review not found", reviewId});
+    const UpdatedReview = {};
+
+    // Copy only the fields that exist in req.body
+    for (const key in req.body) {
+        if (req.body.hasOwnProperty(key)) {
+            UpdatedReview[`reviews.$.${key}`] = req.body[key];
         }
-        return res.status(200).json({message: "Review updated successfully", product});
+    }
+
+    // Add timestamp
+    if (Object.keys(UpdatedReview).length === 0) {
+        return res.status(400).json({ message: "No fields to update" });
+    }
+    UpdatedReview["reviews.$.updatedAt"] = Date.now();
+
+    try {
+        const product = await Product.findOneAndUpdate(
+            {
+                _id: productId,
+                "reviews._id": reviewId
+            },
+            {
+                $set: UpdatedReview
+            },
+            { new: true }
+        );
+
+        if (!product) {
+            return res.status(404).json({ message: "Review not found", reviewId });
+        }
+
+        return res.status(200).json({
+            message: "Review updated successfully",
+            product
+        });
     } catch (err) {
         console.error("Error updating review", err);
-        res.status(500).json({message: "internal server error"});
+        return res.status(500).json({ message: "Internal server error" });
     }
-}
+};
+
 
 export const addProductReview = async(req, res) => {
     const productId = req.params.productId;
