@@ -99,6 +99,31 @@ export const updateProduct = async (req, res) => {
         console.error("Error Updating product", err)
     }
 };
+export const updateProductReview = async (req,res) => {
+    const productId = req.params.productId;
+    const reviewId = req.params.reviewId;
+    const {user, name, comment, rating} = req.body;
+    try {
+        const product = await Product.findOneAndUpdate({
+            _id: productId,
+            "reviews._id": reviewId
+        }, {
+            $set: {
+                "reviews.$.user": user,
+                "reviews.$.name": name,
+                "reviews.$.comment": comment,
+                "reviews.$.rating": rating
+            }
+        }, {new: true});
+        if (!product) {
+            return res.status(404).json({message: "Review not found", reviewId});
+        }
+        return res.status(200).json({message: "Review updated successfully", product});
+    } catch (err) {
+        console.error("Error updating review", err);
+        res.status(500).json({message: "internal server error"});
+    }
+}
 
 export const addProductReview = async(req, res) => {
     const productId = req.params.productId;
