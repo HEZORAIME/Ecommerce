@@ -17,8 +17,8 @@ export const createProduct = async (req, res) => {
 
 
     } catch (err) {
-        res.status(500).json({ message: "Internal server error" });
         console.error("Error creating product", err);
+        res.status(500).json({ message: "Internal server error" });
     }
 };
 export const getallProduct = async (req, res) => {
@@ -31,8 +31,8 @@ export const getallProduct = async (req, res) => {
         const product = await Product.find(query).sort({createdAt: -1});
         res.status(200).json({message: "Product featched successfully", product});
     } catch (err) {
-        res.status(500).json({message: "Internal server error"});
         console.error("Error fetching all the product", err);
+        res.status(500).json({message: "Internal server error"});
     }
 }
 export const getOneProduct = async (req, res) => {
@@ -45,8 +45,8 @@ export const getOneProduct = async (req, res) => {
             res.status(200).json({message: "Product featched successfully", product});
         }
     } catch (err) {
-        res.status(500).json({message: "Internal server error call 911"});
         console.error("Error fetching product", err);
+        res.status(500).json({message: "Internal server error call 911"});
     }
 };
 export const deleteOneProduct = async (req, res) => {
@@ -95,8 +95,8 @@ export const updateProduct = async (req, res) => {
             res.status(404).json({message: "Product not found"});
         }
     } catch(err) {
-        res.status(500).json({message: "Internal server error"});
         console.error("Error Updating product", err)
+        res.status(500).json({message: "Internal server error"});
     }
 };
 export const updateProductReview = async (req,res) => {
@@ -146,7 +146,7 @@ export const addProductReview = async(req, res) => {
         await product.save();
         res.status(201).json({message: "Review added successfully", product});
     } catch(err) {
-        res.status(500).json({message: "Internal server error"});
         console.log("Error adding review", err);
+        res.status(500).json({message: "Internal server error"});
     }
 };
