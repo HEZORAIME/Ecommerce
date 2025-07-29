@@ -21,6 +21,18 @@ export default function AdminProducts() {
     }
   };
 
+  const handleDelete = async (productId) => {
+    try {
+      const response = await api.delete(`/products/${productId}`);
+      setProducts(products.filter((product) => product.id !== productId));
+      if (response.data.message === 'Product deleted successfully') {
+        setError(null);
+      }
+    } catch(error) {
+      setError(error.message)
+    }
+  }
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -36,13 +48,18 @@ export default function AdminProducts() {
           <tr>
             <th>Product Name</th>
             <th>Description</th>
+            <th>Category</th>
+            <th>Stock</th>
           </tr>
         </thead>
         <tbody className="bg-gray-100">
           {products.map((product) => (
             <tr key={product.id} className="hover:bg-gray-200">
-              <td className="">{product.name}</td>
+
+              <td className="px-6 py-4 text-left">{product.name}</td>
               <td className="px-6 py-4 text-left">{product.description}</td>
+              <td className="px-6 py-4 text-left">{product.category}</td>
+              <td className="px-6 py-4 text-left">{product.stock}</td>
             </tr>
           ))}
         </tbody>
