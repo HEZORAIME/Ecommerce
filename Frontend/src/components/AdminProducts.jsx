@@ -3,6 +3,13 @@ import api from "../utils/api";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    description: "",
+    category: "",
+    stock: 0,
+  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   // create product
@@ -10,7 +17,6 @@ export default function AdminProducts() {
     fetchProducts();
   }, []);
   // admin create product
-
 
   const fetchProducts = async () => {
     try {
@@ -39,20 +45,25 @@ export default function AdminProducts() {
       setError(error.message);
     }
   };
-  const handleCreate = async (products) => {
-    if(!products) {
-      setError("Invalid product")
-    }
-    if (!products.name || !products.description || products.category || products.stock) {
-      console.error("All fields needs required!")
+  const handleCreate = async (newProducts) => {
+    if (
+      !newProduct ||
+      !newProduct.name ||
+      !newProduct.description ||
+      !newProduct.category ||
+      !newProduct.stock
+    ) {
+      setError("All fields are required");
+      return;
     }
     try {
-      const response = await api.post("/users/products/Admin");
+      const response = await api.post("/users/products/Admin", newProduct);
       if (response.data.message === "Products created successfully") {
-        setProducts()
+        fetchProducts();
+        setError(null);
       }
     } catch (error) {
-      setError(error.message)
+      setError(error.message);
     }
   };
 
@@ -86,15 +97,90 @@ export default function AdminProducts() {
                   Delete
                 </button>
                 <button
-                  onClick={() => handleCreate(products)}
-                  className="bg-green-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
+                  onClick={() => setShowForm(true)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mb-4"
                 >
-                  Create
+                  + Add Product
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
+        {showForm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white p-6 rounded shadow-lg w-[400px]">
+              <h2 className="text-lg font-bold mb-4">Create New Product</h2>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleCreate(newProduct);
+                  setShowForm(false); // close modal after create
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={newProduct.name}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, name: e.target.value })
+                  }
+                  className="border p-2 w-full mb-2"
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Description"
+                  value={newProduct.description}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      description: e.target.value,
+                    })
+                  }
+                  className="border p-2 w-full mb-2"
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Category"
+                  value={newProduct.category}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, category: e.target.value })
+                  }
+                  className="border p-2 w-full mb-2"
+                  required
+                />
+                <input
+                  type="number"
+                  placeholder="Stock"
+                  value={newProduct.stock}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      stock: Number(e.target.value),
+                    })
+                  }
+                  className="border p-2 w-full mb-4"
+                  required
+                />
+                <div className="flex justify-between">
+                  <button
+                    type="submit"
+                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                  >
+                    Create
+                  </button>
+                  <button
+                    onClick={() => setShowForm(false)}
+                    className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </table>
     </div>
   );
