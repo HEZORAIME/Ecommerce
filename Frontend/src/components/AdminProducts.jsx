@@ -5,10 +5,12 @@ export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  // create product
   useEffect(() => {
     fetchProducts();
   }, []);
+  // admin create product
+
 
   const fetchProducts = async () => {
     try {
@@ -35,6 +37,22 @@ export default function AdminProducts() {
       }
     } catch (error) {
       setError(error.message);
+    }
+  };
+  const handleCreate = async (products) => {
+    if(!products) {
+      setError("Invalid product")
+    }
+    if (!products.name || !products.description || products.category || products.stock) {
+      console.error("All fields needs required!")
+    }
+    try {
+      const response = await api.post("/users/products/Admin");
+      if (response.data.message === "Products created successfully") {
+        setProducts()
+      }
+    } catch (error) {
+      setError(error.message)
     }
   };
 
@@ -66,6 +84,12 @@ export default function AdminProducts() {
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                 >
                   Delete
+                </button>
+                <button
+                  onClick={() => handleCreate(products)}
+                  className="bg-green-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
+                >
+                  Create
                 </button>
               </td>
             </tr>
