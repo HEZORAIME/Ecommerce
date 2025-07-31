@@ -45,7 +45,7 @@ export default function AdminProducts() {
       setError(error.message);
     }
   };
-  const handleCreate = async (newProducts) => {
+  const handleCreate = async (newProduct) => {
     if (
       !newProduct ||
       !newProduct.name ||
@@ -57,7 +57,7 @@ export default function AdminProducts() {
       return;
     }
     try {
-      const response = await api.post("/users/products/Admin", newProduct);
+      const response = await api.post("/users/products", newProduct);
       if (response.data.message === "Products created successfully") {
         fetchProducts();
         setError(null);
@@ -106,82 +106,82 @@ export default function AdminProducts() {
             </tr>
           ))}
         </tbody>
-        {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded shadow-lg w-[400px]">
-              <h2 className="text-lg font-bold mb-4">Create New Product</h2>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleCreate(newProduct);
-                  setShowForm(false); // close modal after create
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="Name"
-                  value={newProduct.name}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, name: e.target.value })
-                  }
-                  className="border p-2 w-full mb-2"
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Description"
-                  value={newProduct.description}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      description: e.target.value,
-                    })
-                  }
-                  className="border p-2 w-full mb-2"
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Category"
-                  value={newProduct.category}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, category: e.target.value })
-                  }
-                  className="border p-2 w-full mb-2"
-                  required
-                />
-                <input
-                  type="number"
-                  placeholder="Stock"
-                  value={newProduct.stock}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      stock: Number(e.target.value),
-                    })
-                  }
-                  className="border p-2 w-full mb-4"
-                  required
-                />
-                <div className="flex justify-between">
-                  <button
-                    type="submit"
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                  >
-                    Create
-                  </button>
-                  <button
-                    onClick={() => setShowForm(false)}
-                    className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </table>
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-[400px]">
+            <h2 className="text-lg font-bold mb-4">Create New Product</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleCreate(newProduct);
+                setShowForm(false); // close modal after create
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Name"
+                value={newProduct.name}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, name: e.target.value })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Description"
+                value={newProduct.description}
+                onChange={(e) =>
+                  setNewProduct({
+                    ...newProduct,
+                    description: e.target.value,
+                  })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Category"
+                value={newProduct.category}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, category: e.target.value })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Stock"
+                value={newProduct.stock}
+                onChange={(e) =>
+                  setNewProduct({
+                    ...newProduct,
+                    stock: Number(e.target.value),
+                  })
+                }
+                className="border p-2 w-full mb-4"
+                required
+              />
+              <div className="flex justify-between">
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                >
+                  Create
+                </button>
+                <button
+                  onClick={() => setShowForm(false)}
+                  className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
