@@ -22,10 +22,15 @@ export default function AdminProducts() {
   };
 
   const handleDelete = async (productId) => {
+    if (!productId) {
+      setError("Invalid product ID");
+      return;
+    }
+
     try {
-      const response = await api.delete(`/products/${productId}`);
-      setProducts(products.filter((product) => product.id !== productId));
+      const response = await api.delete(`/products/product/${productId}`);
       if (response.data.message === "Product deleted successfully") {
+        setProducts(products.filter((product) => product._id !== productId));
         setError(null);
       }
     } catch (error) {
@@ -33,13 +38,8 @@ export default function AdminProducts() {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="px-10 flex justify-center">
@@ -50,18 +50,19 @@ export default function AdminProducts() {
             <th>Description</th>
             <th>Category</th>
             <th>Stock</th>
+            <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-gray-100">
           {products.map((product) => (
-            <tr key={product.id} className="hover:bg-gray-200">
+            <tr key={product._id} className="hover:bg-gray-200">
               <td className="px-6 py-4 text-left">{product.name}</td>
               <td className="px-6 py-4 text-left">{product.description}</td>
               <td className="px-6 py-4 text-left">{product.category}</td>
               <td className="px-6 py-4 text-left">{product.stock}</td>
-              <td>
+              <td className="px-6 py-4 text-left">
                 <button
-                  onClick={() => handleDelete(product.id)}
+                  onClick={() => handleDelete(product._id)}
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                 >
                   Delete
