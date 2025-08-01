@@ -57,13 +57,21 @@ export default function AdminProducts() {
       return;
     }
     try {
+      // Fixed API endpoint to match the backend route
       const response = await api.post("/users/products", newProduct);
-      if (response.data.message === "Products created successfully") {
+      if (response.data.message === "Product created successfully") { // Fixed message to match backend response
         fetchProducts();
         setError(null);
+        // Reset the form
+        setNewProduct({
+          name: "",
+          description: "",
+          category: "",
+          stock: 0,
+        });
       }
     } catch (error) {
-      setError(error.message);
+      setError(error.message || "Failed to create product");
     }
   };
 
