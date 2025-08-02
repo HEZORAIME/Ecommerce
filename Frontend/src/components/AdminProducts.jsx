@@ -172,6 +172,18 @@ export default function AdminProducts() {
                 className="border p-2 w-full mb-4"
                 required
               />
+              <input
+                type="number"
+                value={newProduct.price}
+                onChange={(e) =>
+                  setNewProduct({
+                    ...newProduct,
+                    price: Number(e.target.value),
+                  })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
               <div className="flex justify-between">
                 <button
                   type="submit"
