@@ -8,7 +8,9 @@ export default function AdminProducts() {
     name: "",
     description: "",
     category: "",
+    price: 0,
     stock: 0,
+    images: ["https://via.placeholder.com/150"], // Changed to array as required by the Product model
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,7 +53,10 @@ export default function AdminProducts() {
       !newProduct.name ||
       !newProduct.description ||
       !newProduct.category ||
-      !newProduct.stock
+      !newProduct.price ||
+      !newProduct.stock ||
+      !newProduct.images ||
+      !newProduct.images.length
     ) {
       setError("All fields are required");
       return;
@@ -59,19 +64,22 @@ export default function AdminProducts() {
     try {
       // Fixed API endpoint to match the backend route
       const response = await api.post("/users/products", newProduct);
-      if (response.data.message === "Product created successfully") { // Fixed message to match backend response
-        fetchProducts();
-        setError(null);
-        // Reset the form
+      if (response.data.message === "Product created successfully") {
+        // Reset form after successful creation
         setNewProduct({
           name: "",
           description: "",
           category: "",
+          price: 0,
           stock: 0,
+          images: ["https://via.placeholder.com/150"],
         });
+        fetchProducts();
+        setError(null);
       }
     } catch (error) {
-      setError(error.message || "Failed to create product");
+      console.error("Error creating product:", error);
+      setError(error.response?.data?.message || error.message || "Failed to create product");
     }
   };
 
