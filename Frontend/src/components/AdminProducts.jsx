@@ -12,6 +12,15 @@ export default function AdminProducts() {
     stock: 0,
     images: ["https://via.placeholder.com/150"], // Changed to array as required by the Product model
   });
+  const [updateProduct, setUpdateProduct] = useState({
+    _id: "",
+    name: "",
+    description: "",
+    category: "",
+    price: 0,
+    stock: 0,
+    images: ["https://via.placeholder.com/150"],
+  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   // create product
@@ -31,6 +40,25 @@ export default function AdminProducts() {
     }
   };
 
+  const handleUpdate = async (product) => {
+    setUpdateProduct({
+      _id: product._id,
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      price: product.price,
+      stock: product.stock,
+      images: product.images[0], // it will show the first image in the array
+    })
+    try {
+      const response = await api.put(`/products/product/${product._id}`,updateProduct);
+      if(response.data.message === "Product update success") {
+        setError(null);
+      }
+    } catch(error) {
+      setError(error.message);
+    }
+  };
   const handleDelete = async (productId) => {
     if (!productId) {
       setError("Invalid product ID");
@@ -114,9 +142,16 @@ export default function AdminProducts() {
                 </button>
                 <button
                   onClick={() => setShowForm(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mb-4"
+                  className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-2 rounded mb-4"
                 >
                   + Add Product
+                </button>
+                <button
+                  onClick={() => handleUpdate(updateProduct._id)}
+
+                  className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                >
+                  Update
                 </button>
               </td>
             </tr>
@@ -125,7 +160,7 @@ export default function AdminProducts() {
       </table>
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg w-[400px]">
+          <div className="bg-white p-4 rounded shadow-lg w-[400px]">
             <h2 className="text-lg font-bold mb-4">Create New Product</h2>
             <form
               onSubmit={(e) => {
