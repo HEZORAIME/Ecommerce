@@ -4,6 +4,10 @@ import api from "../utils/api";
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  // create product
   const [newProduct, setNewProduct] = useState({
     name: "",
     description: "",
@@ -21,10 +25,6 @@ export default function AdminProducts() {
     stock: 0,
     images: ["https://via.placeholder.com/150"],
   });
-  const [showUpdateForm, setShowUpdateForm] = useState(false);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  // create product
   useEffect(() => {
     fetchProducts();
   }, []);
