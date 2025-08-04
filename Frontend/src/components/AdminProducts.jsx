@@ -21,6 +21,7 @@ export default function AdminProducts() {
     stock: 0,
     images: ["https://via.placeholder.com/150"],
   });
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   // create product
@@ -40,7 +41,7 @@ export default function AdminProducts() {
     }
   };
 
-  const handleUpdate = async (product) => {
+  const handleUpdateClick = (product) => {
     setUpdateProduct({
       _id: product._id,
       name: product.name,
@@ -48,15 +49,27 @@ export default function AdminProducts() {
       category: product.category,
       price: product.price,
       stock: product.stock,
-      images: product.images[0], // it will show the first image in the array
-    })
+      images: Array.isArray(product.images) ? product.images : ["https://via.placeholder.com/150"],
+    });
+    setShowUpdateForm(true);
+  };
+
+  const handleUpdate = async () => {
+    if (!updateProduct._id) {
+      setError("Invalid product ID");
+      return;
+    }
+
     try {
-      const response = await api.put(`/products/product/${product._id}`,updateProduct);
-      if(response.data.message === "Product update success") {
+      const response = await api.put(`/products/product/${updateProduct._id}`, updateProduct);
+      if (response.data.message === "Product updated successfully") {
+        fetchProducts();
+        setShowUpdateForm(false);
         setError(null);
       }
     } catch(error) {
-      setError(error.message);
+      console.error("Error updating product:", error);
+      setError(error.response?.data?.message || error.message || "Failed to update product");
     }
   };
   const handleDelete = async (productId) => {
@@ -147,8 +160,7 @@ export default function AdminProducts() {
                   + Add Product
                 </button>
                 <button
-                  onClick={() => handleUpdate(updateProduct._id)}
-
+                  onClick={() => handleUpdateClick(product)}
                   className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
                 >
                   Update
@@ -236,6 +248,95 @@ export default function AdminProducts() {
                 </button>
                 <button
                   onClick={() => setShowForm(false)}
+                  className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+      )}
+      {showUpdateForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-4 rounded shadow-lg w-[400px]">
+            <h2 className="text-lg font-bold mb-4">Update Product</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdate();
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Name"
+                value={updateProduct.name}
+                onChange={(e) =>
+                  setUpdateProduct({ ...updateProduct, name: e.target.value })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Description"
+                value={updateProduct.description}
+                onChange={(e) =>
+                  setUpdateProduct({
+                    ...updateProduct,
+                    description: e.target.value,
+                  })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Category"
+                value={updateProduct.category}
+                onChange={(e) =>
+                  setUpdateProduct({ ...updateProduct, category: e.target.value })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Price"
+                value={updateProduct.price}
+                onChange={(e) =>
+                  setUpdateProduct({
+                    ...updateProduct,
+                    price: Number(e.target.value),
+                  })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Stock"
+                value={updateProduct.stock}
+                onChange={(e) =>
+                  setUpdateProduct({
+                    ...updateProduct,
+                    stock: Number(e.target.value),
+                  })
+                }
+                className="border p-2 w-full mb-4"
+                required
+              />
+              <div className="flex justify-between">
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                >
+                  Update
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowUpdateForm(false)}
                   className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600"
                 >
                   Cancel
