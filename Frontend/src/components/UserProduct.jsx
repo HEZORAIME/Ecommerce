@@ -19,21 +19,28 @@ export default function UserProducts() {
       setLoading(false);
     }
   };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
   return (
-    <div>
-      <h1>User Products</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      <ul>
+    <table className="flex flex-col">
+      <thead>
+        <tr className="flex flex-row">
+          <th className="w-1/4">Product Name</th>
+          <th className="w-1/4">Description</th>
+          <th className="w-1/4">Category</th>
+          <th className="w-1/4">Stock</th>
+        </tr>
+      </thead>
+      <tbody>
         {products.map((product) => (
-          <li key={product._id}>
-            <h2>{product.name}</h2>
-            <p>{product.description}</p>
-            <p>{product.category}</p>
-            <p>Stock: {product.stock}</p>
-          </li>
+          <tr className="flex flex-row" key={product._id}>
+            <td className="w-1/4">{product.name}</td>
+            <td className="w-1/4">{product.description}</td>
+            <td className="w-1/4">{product.category}</td>
+            <td className="w-1/4">{product.stock}</td>
+          </tr>
         ))}
-      </ul>
-    </div>
+      </tbody>
+    </table>
   );
 }
