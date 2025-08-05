@@ -10,5 +10,5 @@ export default function AdminDashboard() {
         <AdminProducts />
       </div>
     </div>
-  )
+  );
 }
