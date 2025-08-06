@@ -29,6 +29,7 @@ export default function UserProducts() {
       <div className="card-body">
         <h2 className="card-title">{products[0]?.name}</h2>
         <p>{products[0]?.description}</p>
+        <p>{products[0]?.price}</p>
         <div className="card-actions justify-end">
           <button className="btn btn-primary">Buy Now</button>
         </div>
