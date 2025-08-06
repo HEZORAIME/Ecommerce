@@ -134,19 +134,21 @@ export default function AdminProducts() {
   return (
     <div className="px-10 flex justify-center">
       <table className="size-30 drop-shadow-lg rounded-md w-full">
-        <thead className="bg-yellow-200">
+        <thead>
           <tr>
             <th>Product Name</th>
+            <th>Price</th>
             <th>Description</th>
             <th>Category</th>
             <th>Stock</th>
             <th>Action</th>
           </tr>
         </thead>
-        <tbody className="bg-gray-100">
+        <tbody>
           {products.map((product) => (
-            <tr key={product._id} className="hover:bg-gray-200">
+            <tr key={product._id} className="hover:bg-black">
               <td className="px-6 py-4 text-left">{product.name}</td>
+              <td className="px-6 py-4 text-left">{product.price}</td>
               <td className="px-6 py-4 text-left">{product.description}</td>
               <td className="px-6 py-4 text-left">{product.category}</td>
               <td className="px-6 py-4 text-left">{product.stock}</td>
