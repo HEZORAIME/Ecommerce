@@ -178,7 +178,7 @@ export default function AdminProducts() {
       </table>
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-4 rounded shadow-lg w-[400px]">
+          <div className="bg-black p-4 rounded shadow-lg w-[400px]">
             <h2 className="text-lg font-bold mb-4">Create New Product</h2>
             <form
               onSubmit={(e) => {
@@ -193,6 +193,16 @@ export default function AdminProducts() {
                 value={newProduct.name}
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, name: e.target.value })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Price"
+                value={newProduct.price}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, price: e.target.value })
                 }
                 className="border p-2 w-full mb-2"
                 required
@@ -233,18 +243,7 @@ export default function AdminProducts() {
                 className="border p-2 w-full mb-4"
                 required
               />
-              <input
-                type="number"
-                value={newProduct.price}
-                onChange={(e) =>
-                  setNewProduct({
-                    ...newProduct,
-                    price: Number(e.target.value),
-                  })
-                }
-                className="border p-2 w-full mb-2"
-                required
-              />
+
               <div className="flex justify-between">
                 <button
                   type="submit"
@@ -262,11 +261,10 @@ export default function AdminProducts() {
             </form>
           </div>
         </div>
-        
       )}
       {showUpdateForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-4 rounded shadow-lg w-[400px]">
+          <div className="bg-black p-4 rounded shadow-lg w-[400px]">
             <h2 className="text-lg font-bold mb-4">Update Product</h2>
             <form
               onSubmit={(e) => {
@@ -280,6 +278,16 @@ export default function AdminProducts() {
                 value={updateProduct.name}
                 onChange={(e) =>
                   setUpdateProduct({ ...updateProduct, name: e.target.value })
+                }
+                className="border p-2 w-full mb-2"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Price"
+                value={updateProduct.price}
+                onChange={(e) =>
+                  setUpdateProduct({ ...updateProduct, price: e.target.value })
                 }
                 className="border p-2 w-full mb-2"
                 required
@@ -302,24 +310,15 @@ export default function AdminProducts() {
                 placeholder="Category"
                 value={updateProduct.category}
                 onChange={(e) =>
-                  setUpdateProduct({ ...updateProduct, category: e.target.value })
-                }
-                className="border p-2 w-full mb-2"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Price"
-                value={updateProduct.price}
-                onChange={(e) =>
                   setUpdateProduct({
                     ...updateProduct,
-                    price: Number(e.target.value),
+                    category: e.target.value,
                   })
                 }
                 className="border p-2 w-full mb-2"
                 required
               />
+
               <input
                 type="number"
                 placeholder="Stock"
@@ -333,6 +332,7 @@ export default function AdminProducts() {
                 className="border p-2 w-full mb-4"
                 required
               />
+
               <div className="flex justify-between">
                 <button
                   type="submit"
