@@ -28,7 +28,7 @@ export const getallProduct = async (req, res) => {
         query.category = category;
     }
     try {
-        const product = await Product.find(query).sort({createdAt: -1});
+        const product = await Product.find(query).select("+price").sort({createdAt: -1});
         res.status(200).json({message: "Product featched successfully", product});
     } catch (err) {
         console.error("Error fetching all the product", err);
@@ -38,7 +38,7 @@ export const getallProduct = async (req, res) => {
 export const getOneProduct = async (req, res) => {
     const productId = req.params.productId;
     try {
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId).select("+price");
         if (!product) {
             return res.status(404).json({message: "Product not found"})
         } else {
