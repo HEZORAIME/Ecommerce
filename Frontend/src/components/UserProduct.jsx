@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../utils/api";
-
+import razorbladeImg from "../assets/Keyboard/razorblade.jpg";
 export default function UserProducts() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
@@ -22,25 +22,17 @@ export default function UserProducts() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   return (
-    <table className="flex flex-col">
-      <thead>
-        <tr className="flex flex-row">
-          <th className="w-1/4">Product Name</th>
-          <th className="w-1/4">Description</th>
-          <th className="w-1/4">Category</th>
-          <th className="w-1/4">Stock</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products.map((product) => (
-          <tr className="flex flex-row" key={product._id}>
-            <td className="w-1/4">{product.name}</td>
-            <td className="w-1/4">{product.description}</td>
-            <td className="w-1/4">{product.category}</td>
-            <td className="w-1/4">{product.stock}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="card bg-base-100 w-96 shadow-sm">
+      <figure>
+        <img src={razorbladeImg} alt={products[0]?.name} />
+      </figure>
+      <div className="card-body">
+        <h2 className="card-title">{products[0]?.name}</h2>
+        <p>{products[0]?.description}</p>
+        <div className="card-actions justify-end">
+          <button className="btn btn-primary">Buy Now</button>
+        </div>
+      </div>
+    </div>
   );
 }
