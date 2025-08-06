@@ -67,9 +67,13 @@ export default function AdminProducts() {
         setShowUpdateForm(false);
         setError(null);
       }
-    } catch(error) {
+    } catch (error) {
       console.error("Error updating product:", error);
-      setError(error.response?.data?.message || error.message || "Failed to update product");
+      setError(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to update product"
+      );
     }
   };
   const handleDelete = async (productId) => {
