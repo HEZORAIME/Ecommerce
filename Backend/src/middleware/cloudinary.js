@@ -1,6 +1,11 @@
-import cloudinary from 'cloudinary'
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from 'multer';
+import dotenv from 'dotenv';
 
-export const cloudinaryConfig = cloudinary.v2.config({
-// working
+// use the environment variables
+dotenv.config();
+
+cloudinary.config({
+    
 })
-
