@@ -2,9 +2,12 @@ import Product from "../models/Product.js";
 import mongoose from "mongoose";
 
 export const createProduct = async (req, res) => {
-    const { name, price, description, images,
-        category, stock, sold, ratings, numOfreviews, reviews } = req.body;
-    if (!name || !price || !description || !images || !category || !stock) {
+
+    const fileUrls = Array.isArray(req.files) ? req.files.map(file => file.path) : [];
+    const bodyImages = Array.isArray(req.body.images) ? req.body.images : [];
+    const images = fileUrls.length ? fileUrls : bodyImages;
+    const { name, price, description, category, stock, sold, ratings, numOfreviews, reviews } = req.body;
+    if (!name || !price || !description || !images || !category || !stock || images.length === 0) {
         return res.status(400).json({ message: "All fields are required" });
     }
     try {
