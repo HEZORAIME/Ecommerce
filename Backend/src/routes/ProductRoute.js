@@ -2,7 +2,7 @@ import express from 'express';
 import { addProductReview, getallProduct, getOneProduct, deleteOneProduct, updateProduct, createProduct } from '../controllers/productController.js';
 import { authenticateToken, isAdmin, isUser } from "../middleware/auth.js";
 import { productRateLimiter } from "../middleware/productRatelimiter.js";
-import multer from 'multer';
+import { upload } from '../middleware/cloudinary.js';
 
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
