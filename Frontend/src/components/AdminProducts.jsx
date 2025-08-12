@@ -5,6 +5,7 @@ export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [imageFiles, setImagesFiles] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   // create product
@@ -71,8 +72,8 @@ export default function AdminProducts() {
       console.error("Error updating product:", error);
       setError(
         error.response?.data?.message ||
-          error.message ||
-          "Failed to update product"
+        error.message ||
+        "Failed to update product"
       );
     }
   };
@@ -93,38 +94,39 @@ export default function AdminProducts() {
     }
   };
   const handleCreate = async (newProduct) => {
-    if (
-      !newProduct ||
-      !newProduct.name ||
-      !newProduct.description ||
-      !newProduct.category ||
-      !newProduct.price ||
-      !newProduct.stock ||
-      !newProduct.images ||
-      !newProduct.images.length
+    if (!newProduct?.name || !newProduct?.description
+      || !newProduct?.category || !newProduct?.price
+      || !newProduct?.stock
     ) {
       setError("All fields are required");
       return;
     }
+    if (!imageFiles.length) {
+      setError("Please upload at least one image");
+      return;
+    }
+
     try {
-      // Fixed API endpoint to match the backend route
-      const response = await api.post("/users/products", newProduct);
-      if (response.data.message === "Product created successfully") {
-        // Reset form after successful creation
-        setNewProduct({
-          name: "",
-          description: "",
-          category: "",
-          price: 0,
-          stock: 0,
-          images: ["https://via.placeholder.com/150"],
-        });
+      const form = new FormData();
+      form.append("name", newProduct.name);
+      form.append("price", newProduct.price);
+      form.append("description", newProduct.description);
+      form.append("category", newProduct.category);
+      form.append("stock", newProduct.stock);
+      imageFiles.forEach((f) => form.append("images", f));
+
+      const res = await api.post("/products/product", form, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      if (res.data.message === "Product created successfully") {
+        setNewProduct({ name: "", description: "", category: "", price: 0, stock: 0, images: [] });
+        setImagesFiles([]);
         fetchProducts();
         setError(null);
       }
     } catch (error) {
-      console.error("Error creating product:", error);
-      setError(error.response?.data?.message || error.message || "Failed to create product");
+      setError(error.response?.data?.message || error.message
+        || "Failed to create product");
     }
   };
 
@@ -162,6 +164,7 @@ export default function AdminProducts() {
                 <button
                   onClick={() => setShowForm(true)}
                   className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-2 rounded mb-4"
+
                 >
                   + Add Product
                 </button>
@@ -171,6 +174,13 @@ export default function AdminProducts() {
                 >
                   Update
                 </button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => setImagesFiles(Array.from(e.target.files))}
+                  className="border p-2 w-full mb-4"
+                />
               </td>
             </tr>
           ))}
