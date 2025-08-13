@@ -2,7 +2,7 @@ import Product from "../models/Product.js";
 import mongoose from "mongoose";
 
 export const createProduct = async (req, res) => {
-
+    console.log('Incoming createProduct files:', Array.isArray(req.files) ? req.files.map(f => ({ fieldname: f.fieldname, path: f.path, filename: f.filename, mimetype: f.mimetype })) : req.files);
     const fileUrls = Array.isArray(req.files) ? req.files.map(file => file.path) : [];
     const bodyImages = Array.isArray(req.body.images) ? req.body.images : [];
     const images = fileUrls.length ? fileUrls : bodyImages;

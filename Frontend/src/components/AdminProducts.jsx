@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "../utils/api";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-  const [imageFiles, setImagesFiles] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const fileInputRef = useRef(null);
   // create product
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -101,7 +102,9 @@ export default function AdminProducts() {
       setError("All fields are required");
       return;
     }
-    if (!imageFiles.length) {
+    const filesFromRef = fileInputRef.current?.files ? Array.from(fileInputRef.current.files) : [];
+    const files = filesFromRef.length ? filesFromRef : imageFiles;
+    if (!files.length) {
       setError("Please upload at least one image");
       return;
     }
@@ -113,14 +116,14 @@ export default function AdminProducts() {
       form.append("description", newProduct.description);
       form.append("category", newProduct.category);
       form.append("stock", newProduct.stock);
-      imageFiles.forEach((f) => form.append("images", f));
+      files.forEach((f) => form.append("images", f));
 
-      const res = await api.post("/products/product", form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await api.post("/products/product", form);
       if (res.data.message === "Product created successfully") {
         setNewProduct({ name: "", description: "", category: "", price: 0, stock: 0, images: [] });
-        setImagesFiles([]);
+        setImageFiles([]);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        setShowForm(false);
         fetchProducts();
         setError(null);
       }
@@ -174,13 +177,6 @@ export default function AdminProducts() {
                 >
                   Update
                 </button>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) => setImagesFiles(Array.from(e.target.files))}
-                  className="border p-2 w-full mb-4"
-                />
               </td>
             </tr>
           ))}
@@ -191,10 +187,10 @@ export default function AdminProducts() {
           <div className="bg-black p-4 rounded shadow-lg w-[400px]">
             <h2 className="text-lg font-bold mb-4">Create New Product</h2>
             <form
+              encType="multipart/form-data"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleCreate(newProduct);
-                setShowForm(false); // close modal after create
               }}
             >
               <input
@@ -208,11 +204,11 @@ export default function AdminProducts() {
                 required
               />
               <input
-                type="text"
+                type="number"
                 placeholder="Price"
                 value={newProduct.price}
                 onChange={(e) =>
-                  setNewProduct({ ...newProduct, price: e.target.value })
+                  setNewProduct({ ...newProduct, price: Number(e.target.value) })
                 }
                 className="border p-2 w-full mb-2"
                 required
@@ -253,7 +249,15 @@ export default function AdminProducts() {
                 className="border p-2 w-full mb-4"
                 required
               />
-
+              <input
+                type="file"
+                name="images"
+                accept="image/*"
+                multiple
+                onChange={(e) => setImageFiles(Array.from(e.target.files))}
+                ref={fileInputRef}
+                className="border p-2 w-full mb-4"
+              />
               <div className="flex justify-between">
                 <button
                   type="submit"
