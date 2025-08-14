@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import api from "../utils/api";
-import razorbladeImg from "../assets/Keyboard/razorblade.jpg";
 export default function UserProducts() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
@@ -22,18 +21,27 @@ export default function UserProducts() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   return (
-    <div className="card bg-base-100 w-96 shadow-sm">
-      <figure>
-        <img src={razorbladeImg} alt={products[0]?.name} />
-      </figure>
-      <div className="card-body">
-        <h2 className="card-title">{products[0]?.name}</h2>
-        <p>{products[0]?.description}</p>
-        <p>{products[0]?.price}</p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+      {products.map((p) => (
+        <div key={p._id} className="card bg-base-100 shadow-sm">
+          <figure className="aspect-square overflow-hidden bg-gray-900">
+            <img
+              src={Array.isArray(p.images) && p.images.length ? p.images[0] : "https://via.placeholder.com/400"}
+              alt={p.name}
+              className="object-cover w-full h-full"
+              loading="lazy"
+            />
+          </figure>
+          <div className="card-body">
+            <h2 className="card-title">{p.name}</h2>
+            <p className="truncate">{p.description}</p>
+            <p>${p.price}</p>
+            <div className="card-actions justify-end">
+              <button className="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

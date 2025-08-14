@@ -6,6 +6,7 @@ export default function AdminProducts() {
   const [showForm, setShowForm] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [imageFiles, setImageFiles] = useState([]);
+  const [creating, setCreating] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const fileInputRef = useRef(null);
@@ -110,6 +111,7 @@ export default function AdminProducts() {
     }
 
     try {
+      setCreating(true);
       const form = new FormData();
       form.append("name", newProduct.name);
       form.append("price", newProduct.price);
@@ -130,6 +132,8 @@ export default function AdminProducts() {
     } catch (error) {
       setError(error.response?.data?.message || error.message
         || "Failed to create product");
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -138,9 +142,18 @@ export default function AdminProducts() {
 
   return (
     <div className="px-10 flex justify-center">
+      <div className="w-full flex justify-end mb-4">
+        <button
+          onClick={() => setShowForm(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        >
+          + Add Product
+        </button>
+      </div>
       <table className="size-30 drop-shadow-lg rounded-md w-full">
         <thead>
           <tr>
+            <th>Image</th>
             <th>Product Name</th>
             <th>Price</th>
             <th>Description</th>
@@ -152,6 +165,13 @@ export default function AdminProducts() {
         <tbody>
           {products.map((product) => (
             <tr key={product._id} className="hover:bg-black">
+              <td className="px-6 py-4 text-left">
+                <img
+                  src={Array.isArray(product.images) && product.images.length ? product.images[0] : "https://via.placeholder.com/100"}
+                  alt={product.name}
+                  className="w-16 h-16 object-cover rounded"
+                />
+              </td>
               <td className="px-6 py-4 text-left">{product.name}</td>
               <td className="px-6 py-4 text-left">{product.price}</td>
               <td className="px-6 py-4 text-left">{product.description}</td>
@@ -163,13 +183,6 @@ export default function AdminProducts() {
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                 >
                   Delete
-                </button>
-                <button
-                  onClick={() => setShowForm(true)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-2 rounded mb-4"
-
-                >
-                  + Add Product
                 </button>
                 <button
                   onClick={() => handleUpdateClick(product)}
@@ -261,9 +274,10 @@ export default function AdminProducts() {
               <div className="flex justify-between">
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                  disabled={creating}
+                  className={`px-4 py-2 rounded text-white ${creating ? "bg-gray-500" : "bg-green-600 hover:bg-green-700"}`}
                 >
-                  Create
+                  {creating ? "Creating..." : "Create"}
                 </button>
                 <button
                   onClick={() => setShowForm(false)}
