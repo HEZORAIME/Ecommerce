@@ -150,7 +150,7 @@ export default function AdminProducts() {
           + Add Product
         </button>
       </div>
-      <table className="size-30 drop-shadow-lg rounded-md w-full">
+      <table className="table-auto drop-shadow-lg rounded-md w-full">
         <thead>
           <tr>
             <th>Image</th>
@@ -166,16 +166,22 @@ export default function AdminProducts() {
           {products.map((product) => (
             <tr key={product._id} className="hover:bg-black">
               <td className="px-6 py-4 text-left">
-                <img
-                  src={Array.isArray(product.images) && product.images.length ? product.images[0] : "https://via.placeholder.com/100"}
-                  alt={product.name}
-                  className="w-16 h-16 object-cover rounded"
-                />
+                <div className="w-16 h-16 rounded overflow-hidden bg-gray-800">
+                  <img
+                    src={Array.isArray(product.images) && product.images.length ? product.images[0] : "https://via.placeholder.com/100"}
+                    alt={`${product.name} image`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://via.placeholder.com/100";
+                    }}
+                  />
+                </div>
               </td>
               <td className="px-6 py-4 text-left">{product.name}</td>
-              <td className="px-6 py-4 text-left">{product.price}</td>
-              <td className="px-6 py-4 text-left">{product.description}</td>
-              <td className="px-6 py-4 text-left">{product.category}</td>
+              <td className="px-6 py-4 text-left">${product.price}</td>
+              <td className="px-6 py-4 text-left max-w-[320px] truncate">{product.description}</td>
+              <td className="px-6 py-4 text-left capitalize">{product.category}</td>
               <td className="px-6 py-4 text-left">{product.stock}</td>
               <td className="px-6 py-4 text-left">
                 <button

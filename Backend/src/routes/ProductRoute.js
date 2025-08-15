@@ -6,15 +6,22 @@ import { upload } from '../middleware/cloudinary.js';
 
 const router = express.Router();
 
-router.post("/product", authenticateToken, isAdmin, (req, res, next) => {
-    upload.array('images', 5)(req, res, (err) => {
-        if (err) {
-            console.error("Upload middleware error", err);
-            return res.status(400).json({ message: "Image upload failed", error: err.message || String(err) });
-        }
-        next();
-    });
-}, createProduct);
+// Use Cloudinary multer upload only for multipart requests; otherwise skip
+const optionalUpload = (req, res, next) => {
+    const contentType = req.headers['content-type'] || '';
+    if (contentType.includes('multipart/form-data')) {
+        return upload.array('images', 5)(req, res, (err) => {
+            if (err) {
+                console.error("Upload middleware error", err);
+                return res.status(400).json({ message: "Image upload failed", error: err.message || String(err) });
+            }
+            next();
+        });
+    }
+    next();
+};
+
+router.post("/product", authenticateToken, isAdmin, optionalUpload, createProduct);
 
 // Routes for product - apply rate limiting only for users
 router.post("/products/:productId/reviews", authenticateToken, isUser, productRateLimiter, addProductReview);
