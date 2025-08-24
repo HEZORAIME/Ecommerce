@@ -5,7 +5,7 @@ import Orb from './Orb'
 export default function UserDashboard() {
   return (
     <div className="relative min-h-screen overflow-hidden">
-      <div className="rounded-xl bg-white/70 shadow-lg backdrop-blur-sm p-6">
+      <div className="bg-violet-700/10 p-6 border-none shadow-none">
         <Navbar />
       </div>
 
@@ -13,8 +13,7 @@ export default function UserDashboard() {
         <Orb hue={-10} hoverIntensity={0.25} />
       </div>
       <div className="relative container mx-auto px-4 py-10">
-        <h1 className="text-3xl font-bold text-center mb-8">Admin Dashboard</h1>
-
+        <h1 className="text-3xl font-bold text-center mb-8">User Dashboard</h1>
       </div>
     </div>
   );
