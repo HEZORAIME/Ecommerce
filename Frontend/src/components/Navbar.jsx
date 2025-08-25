@@ -22,9 +22,7 @@ export default function Navbar() {
   
   <div className="w-1/3 flex justify-end">
     <button 
-      className="btn btn-primary rounded-sm bg-red-400 text-lg" 
-      onClick={handleLogout}
-    >
+      className="btn btn-primary rounded-sm bg-red-400 text-lg" onClick={handleLogout}>
       Logout
     </button>
   </div>
