@@ -5,15 +5,17 @@ import Orb from './Orb'
 export default function UserDashboard() {
   return (
     <div className="relative min-h-screen overflow-hidden">
-      <div className="bg-violet-700/10 p-6 border-none shadow-none">
+      <div className="relative bg-violet-700/10 p-6">
         <Navbar />
       </div>
 
-      <div className="absolute inset-0 -z-10">
-        <Orb hue={-10} hoverIntensity={0.25} />
+      <div className="absolute inset-7 -z-10">
+        <Orb hue={-6} hoverIntensity={0.60} />
       </div>
-      <div className="relative container mx-auto px-4 py-10">
-        <h1 className="text-3xl font-bold text-center mb-8">User Dashboard</h1>
+      <div className="absolute flex justify-center top-96 left-[40%]">
+        <button className="bg-violet-700 text-white px-5 py-2 rounded-md">
+            Shop
+        </button>
       </div>
     </div>
   );
