@@ -4,13 +4,20 @@ import Register from "./pages/Register";
 import UserDashboard from "./pages/userDashboard";
 import AdminDashboard from "./pages/adminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Shopna from "./pages/EcomShop";
 function App() {
   return (
-    
+
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/Shopna" element={
+        <ProtectedRoute requiredRole="user">
+          <Shopna />
+        </ProtectedRoute>
+      }
+      />
       <Route
         path="/dashboard"
         element={
