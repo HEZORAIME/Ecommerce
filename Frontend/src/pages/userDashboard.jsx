@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar'
 import Orb from './Orb'
+import { Link } from 'react-router';
 // import UserProducts from '../components/UserProduct'
 //<UserProducts />
 export default function UserDashboard() {
@@ -12,9 +13,9 @@ export default function UserDashboard() {
       <div className="absolute inset-7 -z-10">
         <Orb hue={-6} hoverIntensity={0.60} />
       </div>
-      <div className="absolute flex justify-center top-96 left-[40%]">
-        <button className="bg-violet-700 text-white px-5 py-2 rounded-md">
-            Shop
+      <div className="absolute flex top-96 left-[37%]">
+        <button className="bg-violet-700 text-white px-10 py-2 rounded-[20px] cursor-pointer">
+          <Link to="/Shopna">Shop</Link>
         </button>
       </div>
     </div>
