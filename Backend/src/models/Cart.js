@@ -28,5 +28,9 @@ const AddToCartSchema = new mongoose.Schema({
             validator: (value) => value >=0,
             message: "Price must not be negative"
         }
-    }
-})
+    },
+    addedAt: {
+        type: Date,
+        default: Date.now,
+    },
+});
