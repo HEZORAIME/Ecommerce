@@ -34,3 +34,39 @@ const AddToCartSchema = new mongoose.Schema({
         default: Date.now,
     },
 });
+const AddToCart = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+        unique: true,
+    },
+    items: [AddToCartSchema],
+    totalItems: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    totalPrice: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+});
+
+AddToCartSchema.methods.calculateTotals = function () {
+    this.totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
+    this.totalPrice = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    this.updatedAt = Date.now();
+};
+
+const Cart = mongoose.model("Cart", AddToCart);
+export default Cart;
