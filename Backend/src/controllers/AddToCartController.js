@@ -23,22 +23,18 @@ export const AddToCart = async (req, res) => {
 
     // Validation: Check if the product exists
     if (!product) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "You Can't Add this Product to a Cart Beacuse it's not Available",
-        });
+      return res.status(404).json({
+        message:
+          "You Can't Add this Product to a Cart Beacuse it's not Available",
+      });
     }
 
     // check if the product stock is less than the quantity user want to add to cart
     if (product.stock < quantity) {
-      return res
-        .status(400)
-        .json({
-          message: "Not enough stock available",
-          availableStock: product.stock,
-        });
+      return res.status(400).json({
+        message: "Not enough stock available",
+        availableStock: product.stock,
+      });
     }
 
     // find the cart for the user or create a new cart if the user not have a cart
@@ -76,8 +72,22 @@ export const AddToCart = async (req, res) => {
         price: product.price,
       });
     }
+    // Calculate totals
+    cart.calculateTotals();
+
+    // Save cart
+    await cart.save();
+
+    // Using populate method by Mongoose used in node.js, So frontend(users) can see important details
+    // of the product not just the productID
+    await cart.populate("items.product", "name images category stock price");
+
+    return res.status(200).json({
+      message: "Product added to cart successfully",
+      cart,
+    });
   } catch (err) {
-    console.error(err);
+    console.error("Can't add product to cart:", err);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
