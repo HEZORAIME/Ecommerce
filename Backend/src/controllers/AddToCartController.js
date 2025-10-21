@@ -91,3 +91,27 @@ export const AddToCart = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+/**
+ * Function for Getting a User Cart
+ */
+export const GetUserCart = async (req, res) => {
+  const userId = req.user._id;
+  try {
+    const cart = await Cart.findOne({ user: userId }).populate(
+      "items.product",
+      "name price images category stock"
+    );
+
+    if (!cart || cart.items.length === 0) {
+      return res.status(200).json({
+        message: "The cart was empty",
+        cart: { items: [], totalItems: 0, totalPrice: 0 },
+      });
+    }
+    return res.status(200).json({ message: "Cart get successfully", cart });
+  } catch (err) {
+    console.error("Can't get user cart:", err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
