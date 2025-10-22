@@ -115,3 +115,77 @@ export const GetUserCart = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+/**
+ * Function for Updating the quantity of a product in the cart
+ */
+
+export const UpdateCartItem = async (req, res) => {
+  const productID = req.params.productID;
+  const { quantity } = req.body;
+  const userId = req.user._id;
+
+  // Validation for productID
+  if (!mongoose.Types.ObjectId.isValid(productID)) {
+    return res.status(400).json({ message: "Invalid product ID" });
+  }
+
+  // validation for making sure the quantity are not negative and not zero
+  if (!quantity || quantity < 1) {
+    return res.status(400).json({ message: "Quantity must be at least 1" });
+  }
+
+  try {
+    const cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    const itemIndex = cart.items.findIndex(
+      (item) => item.product.toString() === productID
+    );
+    // check if the product are exist in the cart if not return status 404
+    // -1 is used to check if the product are not found in the cart
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: "Product not found in cart" });
+    }
+
+    // Check product stock
+    const product = await Product.findById(productID)
+      .select("+price")
+      .sort({ updatedAt: -1 });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    if (product.stock < quantity) {
+      return res.status(400).json({
+        message: "Insufficient stock",
+        availableStock: product.stock,
+      });
+    }
+    // adding this line to update the total price of the product in the cart
+    // by multiplying the quantity with the price of the product
+    cart.items[itemIndex].quantity = quantity;
+    cart.items[itemIndex].price = product.price * quantity;
+
+    cart.calculateTotals();
+
+    await cart.save();
+
+    await cart.populate("items.product", "name images category");
+
+    return (
+      res.status(200),
+      json({
+        message: "Cart updated successfully",
+        cart,
+      })
+    );
+  } catch (err) {
+    console.error("Can't update cart item:", err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
