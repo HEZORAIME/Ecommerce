@@ -189,3 +189,69 @@ export const UpdateCartItem = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+/**
+ * clear item from the cart
+ */
+
+export const RemoveItemthecart = async (req, res) => {
+  const productID = req.params.productID;
+  const userId = req.user._id;
+
+  if(!mongoose.Types.ObjectId.isValid(productID)) {
+    return res.status(400),jsonb({ message: "Incalid product ID" });
+  }
+
+  try{
+    const cart = await Cart.findOne({ user: userId });
+
+    if(!cart) {
+      return res.status(404).json({message: "Cart not Found enable to remove the item"});
+    }
+
+    const itemIndex = cart.items.findIndex(
+      (item) => item.product.toString() === productID
+    );
+    
+    if(itemIndex === -1) {
+      return res.status(404).json({message: "Product not found in cart"});
+    }
+    // using splice method by js i can remove specific item from the array
+    cart.items.splice(itemIndex, 1);
+
+    // Calculate totals
+    cart.calculateTotals();
+
+    await cart.save();
+
+    // using populate method in mongoose use in node.js to show the contain of the product in the front end not just the productID
+    await cart.populate("items.product", "name images category");
+
+    return res.status(200).json({message: "product removed successfully", cart});
+  } catch (err) {
+    console.error("Can't remove the product from the cart", err);
+    return res.status(500).json({ message: "Internal Error"});
+  }
+};
+
+/**
+ * clear the all cart
+ */
+export const removecart = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      return res.status(404).json({message: "Cart not found"});
+    }
+
+    cart.items = [];
+    cart.totalItems = 0;
+    cart
+
+  } catch(err) {
+
+  }
+}
