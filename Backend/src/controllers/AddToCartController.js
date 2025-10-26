@@ -249,9 +249,14 @@ export const removecart = async (req, res) => {
 
     cart.items = [];
     cart.totalItems = 0;
-    cart
+    cart.totalPrice = 0;
+    cart.updatedAt = Date.now();
 
+    await cart.save();
+
+    return res.status(200).json({message: "Cart cleared successfully", cart,});
   } catch(err) {
-
+    console.error("can't clear the cart", err);
+    return res.status(500).json({message: "Internal Error"});
   }
-}
+};
