@@ -194,12 +194,12 @@ export const UpdateCartItem = async (req, res) => {
  * clear item from the cart
  */
 
-export const RemoveItemthecart = async (req, res) => {
+export const RemoveItemFromCart = async (req, res) => {
   const productID = req.params.productID;
   const userId = req.user._id;
 
   if(!mongoose.Types.ObjectId.isValid(productID)) {
-    return res.status(400),jsonb({ message: "Incalid product ID" });
+    return res.status(400).json({ message: "Incalid product ID" });
   }
 
   try{
@@ -237,7 +237,7 @@ export const RemoveItemthecart = async (req, res) => {
 /**
  * clear the all cart
  */
-export const removecart = async (req, res) => {
+export const ClearCart = async (req, res) => {
   const userId = req.user._id;
 
   try {
